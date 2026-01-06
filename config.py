@@ -19,54 +19,13 @@ Args:
     subset: Dataset subset to use for HuggingFace datasets, default None
 """
 
-# ----- HuggingFace Datasets -----
-
-example_sft_dataset = DatasetLoader(
-    dataset_path="HuggingFaceTB/smoltalk",
-    dataset_type="sft",
-    limit=1000,
-    test_size=0.2,
-    subset="all",
-)
-
-example_dpo_dataset = DatasetLoader(
-    dataset_path="mlabonne/orpo-dpo-mix-40k",
-    dataset_type="dpo",
-    limit=1000,
-    test_size=0.2,
-    subset="default",
-)
-
-example_vlm_sft_dataset = DatasetLoader(
-    dataset_path="alay2shah/example-vlm-sft-dataset",
-    dataset_type="vlm_sft",
-    limit=None,
-    test_size=0.2,
-)
-
 # ----- Local File Datasets -----
 
 local_jsonl_dataset = DatasetLoader(
-    dataset_path="/path/to/your/dataset.jsonl",
+    dataset_path="/content/msg.jsonl",
     dataset_type="sft",
-    test_size=0.2,
+    test_size=0,
 )
-
-local_parquet_dataset = DatasetLoader(
-    dataset_path="/path/to/your/dataset.parquet",
-    dataset_type="sft",
-    test_size=0.2,
-)
-
-# ----- Cloud Storage Dataset Examples -----
-# Supports s3:// for AWS, gs:// for GCS, az:// for Azure
-
-s3_dataset = DatasetLoader(
-    dataset_path="s3://your-bucket/path/to/dataset.parquet",
-    dataset_type="sft",
-    test_size=0.2,
-)
-
 
 #################################
 #       Training Config         #
@@ -128,7 +87,7 @@ JOB_CONFIG = JobConfig(
     job_name="my_job_name",
     model_name="LFM2-1.2B",
     training_type="sft",
-    dataset=example_sft_dataset,
+    dataset=local_jsonl_dataset,
     training_config=TrainingConfig.MOE_SFT.override(**user_config),
     peft_config=PeftConfig.DEFAULT_LORA,
 )
